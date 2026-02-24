@@ -1,6 +1,6 @@
 {
   "name": "markdown-editor",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A Typora-like Markdown editor built with Electron and Vue",
   "main": "dist/main/main.js",
   "homepage": "./",
@@ -77,6 +77,10 @@
   "build": {
     "appId": "com.markdown-editor.app",
     "productName": "Markdown Editor",
+    "publish": {
+      "provider": "github",
+      "timeout": 600000
+    },
     "directories": {
       "buildResources": "build",
       "output": "dist-electron"
