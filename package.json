@@ -88,7 +88,7 @@
     "win": {
       "target": ["nsis", "portable"],
       "artifactName": "MarkdownEditor-${version}-${arch}.${ext}",
-      "icon": "icons/512x512.png"
+      "icon": "build/icons/512x512.png"
     },
     "nsis": {
       "oneClick": false,
@@ -99,7 +99,7 @@
     "linux": {
       "target": ["AppImage", "deb"],
       "artifactName": "MarkdownEditor-${version}-${arch}.${ext}",
-      "icon": "icons",
+      "icon": "build/icons",
       "category": "Office",
       "maintainer": "Markdown Editor Team",
       "mimeTypes": ["text/markdown", "text/x-markdown"]
@@ -107,7 +107,7 @@
     "mac": {
       "target": ["dmg", "zip"],
       "artifactName": "MarkdownEditor-${version}.${ext}",
-      "icon": "icons/512x512.png",
+      "icon": "build/icons/512x512.png",
       "category": "public.app-category.productivity"
     }
   }

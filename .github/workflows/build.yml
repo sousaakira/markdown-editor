@@ -1,0 +1,78 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run build:linux
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: dist-electron/*.AppImage
+          if-no-files-found: ignore
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-deb
+          path: dist-electron/*.deb
+          if-no-files-found: ignore
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run build:win
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist-electron/*.exe
+          if-no-files-found: ignore
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run build:mac
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac
+          path: |
+            dist-electron/*.dmg
+            dist-electron/*.zip
+          if-no-files-found: ignore
