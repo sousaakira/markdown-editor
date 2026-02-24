@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, watch, ref, inject } from 'vue'
+import { marked } from 'marked'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
@@ -15,6 +16,14 @@ import CodeBlockBubbleMenu from './CodeBlockBubbleMenu.vue'
 
 const markdownStore = useMarkdownStore()
 const contextMenu = ref({ visible: false, x: 0, y: 0, from: 0, to: 0 })
+
+marked.setOptions({ gfm: true })
+
+function setMarkdownContent(md) {
+  if (!editor.value || !md) return
+  const html = marked.parse(md)
+  editor.value.commands.setContent(html || '<p></p>', { emitUpdate: false })
+}
 
 const editor = useEditor({
   content: markdownStore.content,
@@ -90,7 +99,7 @@ watch(
     if (!editor.value) return
     const current = editor.value.getMarkdown?.() ?? ''
     if (content !== current) {
-      editor.value.commands.setContent(content, { contentType: 'markdown', emitUpdate: false })
+      setMarkdownContent(content)
     }
   }
 )
@@ -101,7 +110,7 @@ onMounted(() => {
     getContentForSave.value = () => editor.value?.getMarkdown?.() ?? markdownStore.content
   }
   if (editor.value && markdownStore.content) {
-    editor.value.commands.setContent(markdownStore.content, { contentType: 'markdown', emitUpdate: false })
+    setMarkdownContent(markdownStore.content)
   }
 })
 
