@@ -1,6 +1,6 @@
 {
   "name": "markdown-editor",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "A Typora-like Markdown editor built with Electron and Vue",
   "main": "dist/main/main.js",
   "homepage": "./",
