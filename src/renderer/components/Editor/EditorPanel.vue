@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, watch, ref, inject } from 'vue'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import { TaskList, TaskItem } from '@tiptap/extension-list'
 import { Markdown } from '@tiptap/markdown'
@@ -20,6 +21,11 @@ const editor = useEditor({
   contentType: 'markdown',
   extensions: [
     StarterKit.configure({ codeBlock: false }),
+    Image.extend({ atom: true }).configure({
+      inline: true,
+      allowBase64: true,
+      HTMLAttributes: { class: 'typora-image' },
+    }),
     CodeBlockLowlight.configure({ lowlight: createLowlight(common) }),
     KeyboardShortcuts,
     TaskList,

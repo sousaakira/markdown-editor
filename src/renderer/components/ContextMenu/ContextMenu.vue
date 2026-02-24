@@ -16,6 +16,25 @@ const paragraphOpen = ref(false)
 const insertOpen = ref(false)
 const copyPasteOpen = ref(false)
 
+async function insertImage(ed) {
+  const api = window.electronAPI?.file
+  if (api?.openImageDialog) {
+    const result = await api.openImageDialog()
+    if (!result.canceled && result.filePaths?.length) {
+      const dataResult = await api.readFileAsDataUrl(result.filePaths[0])
+      if (dataResult.success && dataResult.dataUrl) {
+        ed.chain().focus().setImage({ src: dataResult.dataUrl }).run()
+      }
+    }
+  } else {
+    const url = window.prompt('URL da imagem:', 'https://')
+    if (url && url !== 'https://') {
+      ed.chain().focus().setImage({ src: url }).run()
+    }
+  }
+  close()
+}
+
 function close() {
   paragraphOpen.value = false
   insertOpen.value = false
@@ -92,6 +111,9 @@ function exec(cmd) {
       break
     case 'horizontalRule':
       ed.chain().focus().setHorizontalRule().run()
+      break
+    case 'image':
+      insertImage(ed)
       break
     case 'codeBlock':
       ed.chain().focus().toggleCodeBlock().run()
@@ -212,6 +234,7 @@ onUnmounted(() => {
           <Icons name="ChevronRight" :size="12" />
         </div>
         <div class="context-menu-submenu-content">
+          <button type="button" class="context-menu-item" @mousedown.prevent @click="exec('image')">Imagem</button>
           <button type="button" class="context-menu-item" @mousedown.prevent @click="exec('horizontalRule')">Linha horizontal</button>
           <div class="context-menu-submenu context-menu-submenu-nested">
             <div class="context-menu-submenu-trigger">

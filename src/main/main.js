@@ -195,6 +195,58 @@ ipcMain.handle('file-open-dialog', async (event) => {
   return result
 })
 
+ipcMain.handle('file-open-image-dialog', async (event) => {
+  const { dialog } = require('electron')
+  const win = BrowserWindow.fromWebContents(event.sender) || mainWindow
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  })
+  return result
+})
+
+ipcMain.handle('file-read-data-url', async (event, filePath) => {
+  try {
+    const buf = await fs.promises.readFile(filePath)
+    const ext = path.extname(filePath).toLowerCase()
+    const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml' }[ext] || 'image/png'
+    const b64 = buf.toString('base64')
+    return { success: true, dataUrl: `data:${mime};base64,${b64}` }
+  } catch (error) {
+    return { success: false, error: error.message }
+  }
+})
+
+ipcMain.handle('file-resolve-images-in-markdown', async (event, markdown, baseDir) => {
+  if (!markdown || !baseDir) return { success: true, content: markdown }
+  try {
+    const imgRegex = /!\[([^\]]*)\]\(([^)]+)\)/g
+    let result = markdown
+    const matches = [...markdown.matchAll(imgRegex)]
+    for (const m of matches) {
+      const [, alt, src] = m
+      if (!src || src.startsWith('data:') || src.startsWith('http://') || src.startsWith('https://')) continue
+      const absPath = path.isAbsolute(src) ? src : path.resolve(baseDir, src)
+      if (!existsSync(absPath)) continue
+      try {
+        const buf = await fs.promises.readFile(absPath)
+        const ext = path.extname(absPath).toLowerCase()
+        const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml' }[ext] || 'image/png'
+        const dataUrl = `data:${mime};base64,${buf.toString('base64')}`
+        result = result.replace(m[0], `![${alt}](${dataUrl})`)
+      } catch {
+        // skip
+      }
+    }
+    return { success: true, content: result }
+  } catch (error) {
+    return { success: false, content: markdown, error: error.message }
+  }
+})
+
 ipcMain.handle('file-save-dialog', async (event) => {
   const { dialog } = require('electron')
   const win = BrowserWindow.fromWebContents(event.sender) || mainWindow

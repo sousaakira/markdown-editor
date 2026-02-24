@@ -1,3 +1,8 @@
+function dirname(filePath) {
+  const i = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'))
+  return i > 0 ? filePath.slice(0, i) : ''
+}
+
 export class FileOperations {
   get api() {
     return window.electronAPI?.file
@@ -17,10 +22,14 @@ export class FileOperations {
     if (!this.api) return { success: false, error: 'Electron API not available' }
     try {
       const contentResult = await this.api.readFile(filePath)
-      if (contentResult.success) {
-        return { success: true, filePath, content: contentResult.content }
+      if (!contentResult.success) return { success: false, error: contentResult.error }
+      let content = contentResult.content
+      if (this.api.resolveImageInMarkdown) {
+        const baseDir = dirname(filePath)
+        const resolved = await this.api.resolveImageInMarkdown(content, baseDir)
+        if (resolved.success && resolved.content) content = resolved.content
       }
-      return { success: false, error: contentResult.error }
+      return { success: true, filePath, content }
     } catch (error) {
       return { success: false, error: error.message }
     }
@@ -30,15 +39,16 @@ export class FileOperations {
     if (!this.api) return { success: false, error: 'Electron API not available' }
     try {
       const result = await this.api.openDialog()
-      if (result.canceled || !result.filePaths?.length) {
-        return { success: false }
-      }
+      if (result.canceled || !result.filePaths?.length) return { success: false }
       const filePath = result.filePaths[0]
       const contentResult = await this.api.readFile(filePath)
-      if (contentResult.success) {
-        return { success: true, filePath, content: contentResult.content }
+      if (!contentResult.success) return { success: false, error: contentResult.error }
+      let content = contentResult.content
+      if (this.api.resolveImageInMarkdown) {
+        const resolved = await this.api.resolveImageInMarkdown(content, dirname(filePath))
+        if (resolved.success && resolved.content) content = resolved.content
       }
-      return { success: false, error: contentResult.error }
+      return { success: true, filePath, content }
     } catch (error) {
       return { success: false, error: error.message }
     }

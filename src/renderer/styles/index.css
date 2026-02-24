@@ -469,6 +469,15 @@
 
 .typora-write-container .ProseMirror a:hover { color: var(--link-hover-color); }
 
+.typora-write-container .ProseMirror img.typora-image,
+.typora-write-container .ProseMirror .typora-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+  border-radius: 4px;
+}
+
 * {
   margin: 0;
   padding: 0;

@@ -8,9 +8,9 @@
     "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
     "dev:main": "NODE_ENV=development electron src/main/main.js",
     "dev:renderer": "vite",
-    "prebuild": "python3 convert_icon.py 2>/dev/null || true",
+    "prebuild": "node scripts/prebuild.js",
     "build": "npm run build:main && npm run build:renderer",
-    "build:main": "mkdir -p dist && cp -r src/main dist/",
+    "build:main": "node scripts/build-main.js",
     "build:renderer": "vite build",
     "build:linux": "npm run build && electron-builder --linux",
     "build:win": "npm run build && electron-builder --win",
@@ -35,10 +35,10 @@
     "@vitejs/plugin-vue": "^4.5.0",
     "concurrently": "^8.2.0",
     "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.0.0",
-    "vite": "^4.4.0",
-    "electron-builder": "^24.0.0"
+    "vite": "^4.4.0"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.10.0",
@@ -51,6 +51,7 @@
     "@codemirror/view": "^6.15.0",
     "@tiptap/extension-bubble-menu": "^3.20.0",
     "@tiptap/extension-code-block-lowlight": "^3.20.0",
+    "@tiptap/extension-image": "^3.20.0",
     "@tiptap/extension-placeholder": "^3.20.0",
     "@tiptap/markdown": "^3.20.0",
     "@tiptap/pm": "^3.20.0",
@@ -80,13 +81,29 @@
       "buildResources": "build",
       "output": "dist-electron"
     },
-    "files": ["dist/**/*", "assets/**/*", "build/**/*", "package.json"],
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "build/**/*",
+      "package.json"
+    ],
     "fileAssociations": [
-      { "ext": "md", "mimeType": "text/markdown", "name": "Markdown" },
-      { "ext": "markdown", "mimeType": "text/markdown", "name": "Markdown" }
+      {
+        "ext": "md",
+        "mimeType": "text/markdown",
+        "name": "Markdown"
+      },
+      {
+        "ext": "markdown",
+        "mimeType": "text/markdown",
+        "name": "Markdown"
+      }
     ],
     "win": {
-      "target": ["nsis", "portable"],
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "artifactName": "MarkdownEditor-${version}-${arch}.${ext}",
       "icon": "build/icons/512x512.png"
     },
@@ -97,15 +114,24 @@
       "createStartMenuShortcut": true
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "artifactName": "MarkdownEditor-${version}-${arch}.${ext}",
       "icon": "build/icons",
       "category": "Office",
       "maintainer": "Markdown Editor Team",
-      "mimeTypes": ["text/markdown", "text/x-markdown"]
+      "mimeTypes": [
+        "text/markdown",
+        "text/x-markdown"
+      ]
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "artifactName": "MarkdownEditor-${version}.${ext}",
       "icon": "build/icons/512x512.png",
       "category": "public.app-category.productivity"
