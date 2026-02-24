@@ -1,0 +1,783 @@
+@import 'highlight.js/styles/github-dark.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Typora Night theme (dark mode) */
+:root {
+  --bg-color: #363b40;
+  --text-color: #b8bfc6;
+  --select-text-bg-color: #4a89dc;
+  --monospace: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  --side-bar-bg-color: #2e3033;
+  --control-text-color: #b7b7b7;
+  --control-text-hover-color: #eee;
+  --border-color: #474d54;
+  --code-bg: #333;
+  --link-color: #e0e0e0;
+  --link-hover-color: #fff;
+  --heading-color: #dedede;
+  --blockquote-color: #9da2a6;
+  --background: var(--bg-color);
+  --foreground: var(--text-color);
+  --editor-bg: #363b40;
+  --editor-fg: #b8bfc6;
+  --preview-bg: #363b40;
+  --preview-fg: var(--text-color);
+  --border: var(--border-color);
+  --item-hover-bg-color: #70717d;
+}
+
+/* Typora layout */
+.typora-layout {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.typora-editor-area {
+  background: var(--editor-bg);
+}
+
+/* Sidebar (Typora dark) */
+.sidebar,
+.sidebar-resizable {
+  flex-shrink: 0;
+  background: var(--side-bar-bg-color);
+  border-right: 1px solid var(--border-color);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-resize-handle {
+  width: 6px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.sidebar-resize-handle:hover,
+.sidebar-resize-handle:active {
+  background: var(--border-color);
+}
+
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.sidebar-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  margin-bottom: 1rem;
+}
+
+.sidebar-section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--control-text-color);
+  margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.sidebar-item-current {
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.sidebar-item-recent {
+  position: relative;
+  padding-right: 1.75rem;
+}
+
+.sidebar-item-recent.active,
+.sidebar-item-file.active {
+  background: var(--item-hover-bg-color);
+}
+
+.sidebar-empty {
+  font-size: 0.75rem;
+  color: var(--control-text-color);
+  padding: 0.5rem;
+  opacity: 0.8;
+}
+
+.sidebar-remove {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--control-text-color);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.sidebar-remove:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-item:hover {
+  background: var(--item-hover-bg-color);
+  color: var(--control-text-hover-color);
+}
+
+.sidebar-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.sidebar-icon {
+  flex-shrink: 0;
+  color: var(--control-text-color);
+}
+
+.sidebar-item:hover .sidebar-icon {
+  color: inherit;
+}
+
+.sidebar-text {
+  font-size: 0.875rem;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.typora-editor-pane {
+  flex: 1;
+  min-width: 0;
+}
+
+.typora-preview-pane {
+  flex: 1;
+  min-width: 0;
+}
+
+.typora-split-divider {
+  width: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+  cursor: col-resize;
+}
+
+/* Footer bar */
+.footer-bar {
+  height: 24px;
+  min-height: 24px;
+  background: var(--side-bar-bg-color);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+.footer-bar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-btn {
+  width: 24px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--control-text-color);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.footer-btn:hover {
+  background: var(--item-hover-bg-color);
+  color: var(--control-text-hover-color);
+}
+
+.code-editor-pane .cm-editor {
+  height: 100%;
+  background: var(--editor-bg);
+}
+
+.code-editor-pane .cm-scroller {
+  font-family: var(--monospace);
+}
+
+/* CodeMirror Typora dark theme */
+.code-editor-pane .cm-content {
+  color: var(--text-color);
+}
+
+.code-editor-pane .cm-gutters {
+  background: var(--code-bg);
+  border-right: 1px solid transparent;
+}
+
+.code-editor-pane .cm-activeLineGutter {
+  background: rgba(51, 51, 51, 0.72);
+}
+
+.code-editor-pane .cm-activeLine {
+  background: rgba(51, 51, 51, 0.72);
+}
+
+.code-editor-pane .cm-cursor {
+  border-left-color: var(--text-color);
+}
+
+/* Tiptap WYSIWYG editor (Typora-style single pane) */
+.typora-write-container {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.typora-write-container .ProseMirror {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px;
+  padding-bottom: 100px;
+  min-height: 100%;
+  outline: none;
+  font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+.typora-write-container .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--control-text-color);
+  pointer-events: none;
+  height: 0;
+}
+
+.typora-write-container .ProseMirror h1,
+.typora-write-container .ProseMirror h2,
+.typora-write-container .ProseMirror h3,
+.typora-write-container .ProseMirror h4,
+.typora-write-container .ProseMirror h5,
+.typora-write-container .ProseMirror h6 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.typora-write-container .ProseMirror h1,
+.typora-write-container .ProseMirror h2,
+.typora-write-container .ProseMirror h3,
+.typora-write-container .ProseMirror h4,
+.typora-write-container .ProseMirror h5,
+.typora-write-container .ProseMirror h6 {
+  color: var(--heading-color);
+}
+
+.typora-write-container .ProseMirror h1 { font-size: 2.25em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+.typora-write-container .ProseMirror h2 { font-size: 1.75em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+.typora-write-container .ProseMirror h3 { font-size: 1.5em; }
+.typora-write-container .ProseMirror h4 { font-size: 1.25em; }
+.typora-write-container .ProseMirror h5 { font-size: 1em; }
+.typora-write-container .ProseMirror h6 { font-size: 1em; color: var(--control-text-color); }
+
+.typora-write-container .ProseMirror p { margin: 0.8em 0; }
+.typora-write-container .ProseMirror ul,
+.typora-write-container .ProseMirror ol { padding-left: 30px; margin: 0.8em 0; }
+
+/* Task list: checkbox e texto na mesma linha */
+.typora-write-container .ProseMirror ul[data-type="taskList"],
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* li com label+input (task item) = checkbox ao lado do texto */
+.typora-write-container .ProseMirror li.task-item,
+.typora-write-container .ProseMirror li[data-type="taskItem"],
+.ProseMirror li.task-item,
+.ProseMirror li[data-type="taskItem"],
+.ProseMirror li:has(> label[contenteditable="false"]) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0.25em 0;
+}
+
+.typora-write-container .ProseMirror li.task-item > label,
+.typora-write-container .ProseMirror li[data-type="taskItem"] > label,
+.ProseMirror li.task-item > label,
+.ProseMirror li[data-type="taskItem"] > label,
+.ProseMirror li:has(> label[contenteditable="false"]) > label {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  padding-top: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.typora-write-container .ProseMirror li.task-item > label span,
+.typora-write-container .ProseMirror li[data-type="taskItem"] > label span,
+.ProseMirror li.task-item > label span,
+.ProseMirror li[data-type="taskItem"] > label span,
+.ProseMirror li:has(> label[contenteditable="false"]) > label span {
+  display: none;
+}
+
+.typora-write-container .ProseMirror li.task-item > label input,
+.typora-write-container .ProseMirror li[data-type="taskItem"] > label input,
+.ProseMirror li.task-item > label input,
+.ProseMirror li[data-type="taskItem"] > label input,
+.ProseMirror li:has(> label[contenteditable="false"]) > label input {
+  margin: 0;
+  vertical-align: middle;
+}
+
+.typora-write-container .ProseMirror li.task-item > div,
+.typora-write-container .ProseMirror li[data-type="taskItem"] > div,
+.ProseMirror li.task-item > div,
+.ProseMirror li[data-type="taskItem"] > div,
+.ProseMirror li:has(> label[contenteditable="false"]) > div {
+  flex: 1;
+  min-width: 0;
+  display: block;
+}
+
+.typora-write-container .ProseMirror li.task-item > div p,
+.typora-write-container .ProseMirror li[data-type="taskItem"] > div p,
+.ProseMirror li.task-item > div p,
+.ProseMirror li[data-type="taskItem"] > div p,
+.ProseMirror li:has(> label[contenteditable="false"]) > div p {
+  margin: 0;
+  line-height: 1.5;
+}
+.typora-write-container .ProseMirror blockquote {
+  border-left: 4px solid var(--border-color);
+  padding: 0 15px;
+  color: var(--blockquote-color);
+  margin: 0.8em 0;
+}
+
+.typora-write-container .ProseMirror code {
+  font-family: var(--monospace);
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-size: 0.9em;
+}
+
+.typora-write-container .ProseMirror pre {
+  background: var(--code-bg);
+  border: none;
+  border-radius: 3px;
+  padding: 10px 10px 10px 30px;
+  overflow-x: auto;
+  margin: 15px 0;
+  font-family: var(--monospace);
+  font-size: 0.875em;
+}
+
+/* Code block language selector (BubbleMenu) */
+.code-block-bubble-menu {
+  padding: 4px;
+  background: #42464a;
+  border: 1px solid #555;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.code-block-bubble-menu .code-block-lang-select {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--side-bar-bg-color);
+  color: var(--control-text-color);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23b7b7b7' d='M2 3l3 3 3-3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  padding-right: 18px;
+}
+
+.code-block-bubble-menu .code-block-lang-select:hover {
+  background-color: var(--item-hover-bg-color);
+}
+
+.typora-write-container .ProseMirror pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.typora-write-container .ProseMirror a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.typora-write-container .ProseMirror a:hover { color: var(--link-hover-color); }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, "Segoe UI Emoji", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 14px;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Editor styles */
+.editor {
+  height: 100%;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 20px;
+  background-color: var(--editor-bg);
+  color: var(--editor-fg);
+  overflow-y: auto;
+}
+
+.editor:focus {
+  outline: none;
+}
+
+/* Typora-style preview (#write) */
+.preview {
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--preview-bg);
+  color: var(--preview-fg);
+  font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, "Segoe UI Emoji", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.preview-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px;
+  padding-bottom: 100px;
+}
+
+@media (min-width: 1400px) {
+  .preview-content { max-width: 1024px; }
+}
+
+@media (min-width: 1800px) {
+  .preview-content { max-width: 1200px; }
+}
+
+.preview h1, .preview h2, .preview h3,
+.preview h4, .preview h5, .preview h6 {
+  position: relative;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+  cursor: text;
+}
+
+.preview h1 { font-size: 2.25em; line-height: 1.2; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+.preview h2 { font-size: 1.75em; line-height: 1.225; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+.preview h3 { font-size: 1.5em; line-height: 1.43; }
+.preview h4 { font-size: 1.25em; }
+.preview h5 { font-size: 1em; }
+.preview h6 { font-size: 1em; color: var(--control-text-color); }
+
+.preview p, .preview blockquote, .preview ul, .preview ol, .preview table {
+  margin: 0.8em 0;
+}
+
+.preview p { line-height: 1.6; }
+
+.preview ul, .preview ol {
+  padding-left: 30px;
+}
+
+.preview li { margin-bottom: 0.25em; }
+
+.preview blockquote {
+  border-left: 4px solid var(--border-color);
+  padding: 0 15px;
+  color: var(--control-text-color);
+}
+
+.preview code, .preview tt {
+  font-family: var(--monospace);
+  border: 1px solid var(--border-color);
+  background-color: var(--code-bg);
+  border-radius: 3px;
+  padding: 0 2px;
+  font-size: 0.9em;
+}
+
+.preview pre {
+  border: 1px solid var(--border-color);
+  background-color: var(--code-bg);
+  border-radius: 3px;
+  padding: 8px 12px 6px;
+  overflow-x: auto;
+  margin: 15px 0;
+  font-family: var(--monospace);
+  font-size: 0.9em;
+}
+
+.preview pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.preview a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.preview a:hover { text-decoration: underline; }
+
+.preview hr {
+  height: 2px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: var(--border-color);
+  border: 0;
+}
+
+.preview table {
+  border-collapse: collapse;
+  width: 100%;
+  word-break: initial;
+}
+
+.preview th, .preview td {
+  border: 1px solid var(--border-color);
+  padding: 6px 13px;
+  text-align: left;
+}
+
+.preview th {
+  font-weight: bold;
+  background-color: var(--code-bg);
+}
+
+.preview tr:nth-child(2n) { background-color: var(--code-bg); }
+
+.preview .task-list-item { list-style: none; }
+.preview .task-list-item input { margin-right: 0.5em; }
+
+/* Scrollbar styles (Typora dark) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(230, 230, 230, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: rgba(230, 230, 230, 0.5);
+}
+
+::selection {
+  background: var(--select-text-bg-color);
+  color: #fff;
+  text-shadow: none;
+}
+
+/* Context menu (Typora dark) */
+.context-menu {
+  position: fixed;
+  z-index: 10000;
+  min-width: 200px;
+  padding: 8px;
+  background: #42464a;
+  border: 1px solid #555;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.context-menu-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.context-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.context-menu-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--control-text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.context-menu-btn svg {
+  flex-shrink: 0;
+  display: block;
+}
+
+.context-menu-btn:hover {
+  background: var(--item-hover-bg-color);
+  color: var(--control-text-hover-color);
+}
+
+.context-menu-divider {
+  height: 1px;
+  background: #555;
+  margin: 4px 0;
+}
+
+.context-menu-submenu {
+  position: relative;
+}
+
+.context-menu-submenu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.context-menu-submenu-trigger:hover {
+  background: var(--item-hover-bg-color);
+}
+
+.context-menu-submenu-content {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  min-width: 160px;
+  padding: 6px;
+  background: #42464a;
+  border: 1px solid #555;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin-left: 4px;
+}
+
+.context-menu-submenu:hover .context-menu-submenu-content {
+  display: block;
+}
+
+.context-menu-submenu-nested .context-menu-submenu-trigger {
+  padding: 6px 8px;
+}
+
+.context-menu-submenu-nested .context-menu-submenu-content {
+  left: 100%;
+  top: 0;
+  margin-left: 4px;
+}
+
+.context-menu-item {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.context-menu-item:hover {
+  background: var(--item-hover-bg-color);
+  color: var(--control-text-hover-color);
+}

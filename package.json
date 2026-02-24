@@ -1,0 +1,114 @@
+{
+  "name": "markdown-editor",
+  "version": "0.1.0",
+  "description": "A Typora-like Markdown editor built with Electron and Vue",
+  "main": "dist/main/main.js",
+  "homepage": "./",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
+    "dev:main": "NODE_ENV=development electron src/main/main.js",
+    "dev:renderer": "vite",
+    "prebuild": "python3 convert_icon.py 2>/dev/null || true",
+    "build": "npm run build:main && npm run build:renderer",
+    "build:main": "mkdir -p dist && cp -r src/main dist/",
+    "build:renderer": "vite build",
+    "build:linux": "npm run build && electron-builder --linux",
+    "build:win": "npm run build && electron-builder --win",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:all": "npm run build && electron-builder -mwl",
+    "preview": "npm run build && electron dist/main/main.js",
+    "test": "echo 'Tests not implemented yet'",
+    "lint": "eslint src --ext .js,.vue",
+    "lint:fix": "eslint src --ext .js,.vue --fix"
+  },
+  "keywords": [
+    "markdown",
+    "editor",
+    "electron",
+    "typora",
+    "desktop",
+    "vue"
+  ],
+  "author": "Markdown Editor Team <dev@example.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "concurrently": "^8.2.0",
+    "electron": "^28.0.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "vite": "^4.4.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.10.0",
+    "@codemirror/commands": "^6.2.4",
+    "@codemirror/lang-markdown": "^6.1.0",
+    "@codemirror/language": "^6.9.0",
+    "@codemirror/search": "^6.5.0",
+    "@codemirror/state": "^6.2.1",
+    "@codemirror/theme-one-dark": "^6.1.0",
+    "@codemirror/view": "^6.15.0",
+    "@tiptap/extension-bubble-menu": "^3.20.0",
+    "@tiptap/extension-code-block-lowlight": "^3.20.0",
+    "@tiptap/extension-placeholder": "^3.20.0",
+    "@tiptap/markdown": "^3.20.0",
+    "@tiptap/pm": "^3.20.0",
+    "@tiptap/starter-kit": "^3.20.0",
+    "@tiptap/vue-3": "^3.20.0",
+    "codemirror": "^6.0.0",
+    "highlight.js": "^11.9.0",
+    "katex": "^0.16.0",
+    "lowlight": "^3.3.0",
+    "marked": "^9.0.0",
+    "pinia": "^2.1.0",
+    "rehype-highlight": "^7.0.0",
+    "rehype-katex": "^7.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.0.0",
+    "tailwindcss": "^3.3.0",
+    "unified": "^11.0.0",
+    "vue": "^3.4.0"
+  },
+  "build": {
+    "appId": "com.markdown-editor.app",
+    "productName": "Markdown Editor",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist-electron"
+    },
+    "files": ["dist/**/*", "assets/**/*", "build/**/*", "package.json"],
+    "fileAssociations": [
+      { "ext": "md", "mimeType": "text/markdown", "name": "Markdown" },
+      { "ext": "markdown", "mimeType": "text/markdown", "name": "Markdown" }
+    ],
+    "win": {
+      "target": ["nsis", "portable"],
+      "artifactName": "MarkdownEditor-${version}-${arch}.${ext}",
+      "icon": "icons/512x512.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "artifactName": "MarkdownEditor-${version}-${arch}.${ext}",
+      "icon": "icons",
+      "category": "Office",
+      "maintainer": "Markdown Editor Team",
+      "mimeTypes": ["text/markdown", "text/x-markdown"]
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "artifactName": "MarkdownEditor-${version}.${ext}",
+      "icon": "icons/512x512.png",
+      "category": "public.app-category.productivity"
+    }
+  }
+}
