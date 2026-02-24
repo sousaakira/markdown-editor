@@ -2,7 +2,7 @@
 
 Typora-inspired Markdown editor built with Electron and Vue.
 
-[English](README.en.md) · [Português](README.pt-br.md) · [Español](README.es.md) · [日本語](README.jp.md)
+[Português](README.pt-br.md) · [Español](README.es.md) · [日本語](README.jp.md)
 
 ## Preview
 
@@ -53,7 +53,7 @@ npm run dev
 ```bash
 npm run build          # Production build
 npm run build:linux    # AppImage + .deb
-npm run build:win      # NSIS + Portable
+npm run build:win     # NSIS + Portable
 npm run build:mac     # DMG + ZIP
 ```
 
