@@ -68,28 +68,31 @@ function createWindow() {
           label: 'New File',
           accelerator: 'CmdOrCtrl+N',
           click: () => {
-            mainWindow.webContents.send('file-new')
+            createWindow()
           }
         },
         {
           label: 'Open File',
           accelerator: 'CmdOrCtrl+O',
           click: () => {
-            mainWindow.webContents.send('file-open')
+            const win = BrowserWindow.getFocusedWindow() || mainWindow
+            if (win && !win.isDestroyed()) win.webContents.send('file-open')
           }
         },
         {
           label: 'Save',
           accelerator: 'CmdOrCtrl+S',
           click: () => {
-            mainWindow.webContents.send('file-save')
+            const win = BrowserWindow.getFocusedWindow() || mainWindow
+            if (win && !win.isDestroyed()) win.webContents.send('file-save')
           }
         },
         {
           label: 'Save As',
           accelerator: 'CmdOrCtrl+Shift+S',
           click: () => {
-            mainWindow.webContents.send('file-save-as')
+            const win = BrowserWindow.getFocusedWindow() || mainWindow
+            if (win && !win.isDestroyed()) win.webContents.send('file-save-as')
           }
         },
         { type: 'separator' },
@@ -174,9 +177,15 @@ app.on('window-all-closed', () => {
 })
 
 // IPC Handlers for file operations
-ipcMain.handle('file-open-dialog', async () => {
+ipcMain.handle('create-new-window', () => {
+  createWindow()
+  return null
+})
+
+ipcMain.handle('file-open-dialog', async (event) => {
   const { dialog } = require('electron')
-  const result = await dialog.showOpenDialog(mainWindow, {
+  const win = BrowserWindow.fromWebContents(event.sender) || mainWindow
+  const result = await dialog.showOpenDialog(win, {
     properties: ['openFile'],
     filters: [
       { name: 'Markdown Files', extensions: ['md', 'markdown'] },
@@ -186,9 +195,10 @@ ipcMain.handle('file-open-dialog', async () => {
   return result
 })
 
-ipcMain.handle('file-save-dialog', async () => {
+ipcMain.handle('file-save-dialog', async (event) => {
   const { dialog } = require('electron')
-  const result = await dialog.showSaveDialog(mainWindow, {
+  const win = BrowserWindow.fromWebContents(event.sender) || mainWindow
+  const result = await dialog.showSaveDialog(win, {
     filters: [
       { name: 'Markdown Files', extensions: ['md'] },
       { name: 'All Files', extensions: ['*'] }
@@ -215,9 +225,10 @@ ipcMain.handle('file-write', async (event, filePath, content) => {
   }
 })
 
-ipcMain.handle('file-confirm-unsaved', async () => {
+ipcMain.handle('file-confirm-unsaved', async (event) => {
   const { dialog } = require('electron')
-  const result = await dialog.showMessageBox(mainWindow, {
+  const win = BrowserWindow.fromWebContents(event.sender) || mainWindow
+  const result = await dialog.showMessageBox(win, {
     type: 'warning',
     title: 'Alterações não salvas',
     message: 'O documento tem alterações não salvas. Deseja salvar?',

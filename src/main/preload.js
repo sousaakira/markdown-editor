@@ -9,7 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     writeFile: (filePath, content) => ipcRenderer.invoke('file-write', filePath, content),
     listDir: (dirPath) => ipcRenderer.invoke('file-list-dir', dirPath),
     confirmUnsaved: () => ipcRenderer.invoke('file-confirm-unsaved'),
-    
+    createNewWindow: () => ipcRenderer.invoke('create-new-window'),
+
     // Listen for file operations from renderer
     onNewFile: (callback) => ipcRenderer.on('file-new', callback),
     onOpenFile: (callback) => ipcRenderer.on('file-open', callback),

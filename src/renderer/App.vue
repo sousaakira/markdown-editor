@@ -125,11 +125,8 @@ async function confirmSwitchDocument() {
   return true
 }
 
-async function handleNewDocument() {
-  if (!(await confirmSwitchDocument())) return
-  markdownStore.setContent('')
-  markdownStore.setFilePath('')
-  markdownStore.clearDirty()
+function handleNewDocument() {
+  window.electronAPI?.file?.createNewWindow?.()
 }
 
 async function handleOpenDocument() {
@@ -162,9 +159,9 @@ function onFileSaveAs() {
 }
 
 onMounted(() => {
+  window.addEventListener('file-new', handleNewDocument)
   const api = window.electronAPI
   if (api) {
-    api.file.onNewFile(handleNewDocument)
     api.file.onOpenFile(handleOpenDocument)
     api.file.onSaveFile(onFileSave)
     api.file.onSaveAsFile(onFileSaveAs)
@@ -176,12 +173,12 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  window.removeEventListener('file-new', handleNewDocument)
   window.removeEventListener('file-save', onFileSave)
   window.removeEventListener('file-save-as', onFileSaveAs)
 
   const api = window.electronAPI
   if (!api) return
-  api.removeAllListeners('file-new')
   api.removeAllListeners('file-open')
   api.removeAllListeners('file-save')
   api.removeAllListeners('file-save-as')
